@@ -56,7 +56,7 @@ short_list = compare.df1_unq_rows
 # 需要买入的基金
 long_list = compare.df2_unq_rows
 
-if len(short_list)==0 and len(long_list)==0:
+if short_list.empty and long_list.empty:
 	message = '工银股混持仓无变化'
 else:
 	short_list = short_list.to_string(index=False)
