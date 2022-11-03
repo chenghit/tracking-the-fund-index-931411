@@ -39,6 +39,12 @@ df_today = pd.read_excel(path_today, engine='xlrd')
 df_today = df_today.iloc[:, 4:6]
 df_today.columns = ['Code', 'Name']
 
+# 首次运行没有旧文件，复制xls充当旧文件，避免运行失败
+if not Path(path_yesterday).exists():
+	xls_today = Path(path_today)
+	xls_yesterday = Path(path_yesterday)
+	xls_yesterday.write_bytes(xls_today.read_bytes())
+
 df_yesterday = pd.read_excel(path_yesterday, engine='xlrd')
 df_yesterday = df_yesterday.iloc[:, 4:6]
 df_yesterday.columns = ['Code', 'Name']
@@ -46,11 +52,16 @@ df_yesterday.columns = ['Code', 'Name']
 
 compare = datacompy.Compare(df_yesterday, df_today, join_columns='Code')
 # 需要卖出的基金
-short_list = compare.df1_unq_rows.to_string(index=False)
+short_list = compare.df1_unq_rows
 # 需要买入的基金
-long_list = compare.df2_unq_rows.to_string(index=False)
+long_list = compare.df2_unq_rows
 
-message = '卖出: \n' + short_list + '\n\n买入：\n' + long_list
+if len(short_list)==0 and len(long_list)==0:
+	message = '工银股混持仓无变化'
+else:
+	short_list = short_list.to_string(index=False)
+	long_list =	long_list.to_string(index=False)
+	message = '卖出: \n' + short_list + '\n\n买入：\n' + long_list
 
 # Send messages to Webex Teams
 def sendMessage(token, room_id, message):
