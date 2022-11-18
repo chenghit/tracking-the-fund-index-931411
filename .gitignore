@@ -1,6 +1,5 @@
 .*/
 *.ipynb
-xls/
 myTokens/
 __pycache__
 .DS_Store
