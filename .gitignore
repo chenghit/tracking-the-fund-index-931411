@@ -1,5 +1,5 @@
 .*/
 *.ipynb
-myTokens/
+myTokens/MyTokens.py
 __pycache__
 .DS_Store
