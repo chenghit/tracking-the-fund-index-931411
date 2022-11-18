@@ -98,4 +98,5 @@ def sendMessage(token, room_id, message):
 
 sendMessage(token=webex_token, room_id=webex_room_id, message=message)
 
+# 删除前一日的xls表格
 Path(path_yesterday).unlink()
